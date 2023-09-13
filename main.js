@@ -1,5 +1,6 @@
 import App from './App'
 
+// 假如不是vue3 执行的代码
 // #ifndef VUE3
 import Vue from 'vue'
 import './uni.promisify.adaptor'
