@@ -1,24 +1,24 @@
-import App from './App'
-
-// 假如不是vue3 执行的代码
-// #ifndef VUE3
-import Vue from 'vue'
-import './uni.promisify.adaptor'
-Vue.config.productionTip = false
-
-App.mpType = 'app'
-const app = new Vue({
-  ...App,
-})
-app.$mount()
-// #endif
-
-// #ifdef VUE3
+// 引入 Pinia
+import { createPinia } from 'pinia'
 import { createSSRApp } from 'vue'
+// 持久化插件
+// import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { piniaPluginPersistedstate } from '@/stores/persist'
+
+import App from './App'
+// 在项目入口引入 utils.js
+import '@/utils/utils'
+
 export function createApp() {
   const app = createSSRApp(App)
-  return {
-    app,
-  }
+  // 实例化Pinia
+  const pinia = createPinia()
+  // 传递给项目应用
+  app.use(pinia)
+  // Pinia 持久化插件
+  // pinia.use(piniaPluginPersistedstate)
+  // Pinia 持久化插件
+  pinia.use(piniaPluginPersistedstate)
+
+  return { app }
 }
-// #endif

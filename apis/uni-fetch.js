@@ -2,7 +2,6 @@
 import { createUniFetch } from 'uni-app-fetch'
 
 // 配置符合自身业务的请求对象
-
 export const uniFetch = createUniFetch({
   baseURL: 'https://slwl-api.itheima.net', // 基地址
   loading: { title: '正在加载...' },
