@@ -11,4 +11,20 @@ export default {
     // 根据接口文档来调用接口
     return uniFetch.post('/driver/login/account', data)
   },
+  // 用户信息
+  profile() {
+    return uniFetch.get('/driver/users')
+  },
+  /**
+   * 任务数据
+   * @param {string} year - 任务数据的年份
+   * @param {string} month - 任务数据的月份
+   */
+  task(year, month) {
+    return uniFetch.get('/driver/users/taskReport', { year, month })
+  },
+  // 车辆信息
+  truck() {
+    return uniFetch.get('/driver/users/truck')
+  },
 }

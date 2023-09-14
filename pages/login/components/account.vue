@@ -1,5 +1,6 @@
 <script setup>
   import { reactive, ref } from 'vue'
+  import { onLoad } from '@dcloudio/uni-app'
   // 导入 userAPI
   import userAPI from '@/apis/user.js'
   // 导入状态数据
@@ -9,6 +10,11 @@
 
   // 表单元素的 ref 属性
   const accountForm = ref()
+
+  // 回跳地址
+  const redirectURL = ref('')
+  // 跳转地址方式
+  const routeType = ref('')
 
   // 定义表单中的响应式数据 reactive定义的值不能修改
   const formData = reactive({
@@ -32,6 +38,13 @@
     },
   })
 
+  // 获取地址中的参数
+  onLoad((query) => {
+    redirectURL.value = query.redirectURL
+    routeType.value = query.routeType
+    console.log(redirectURL.value, routeType.value)
+  })
+
   // 监听表单的提交
   async function onFormSubmit() {
     try {
@@ -49,6 +62,12 @@
 
       // 持久化存储用户登录状态  data就是获取的token 在pinia中允许直接对数据进行修改
       userStore.token = data
+
+      console.log(routeType.value)
+
+      // 地址重定向或switchTab
+      // console.log(redirectURL.value)
+      uni[routeType.value]({ url: redirectURL.value })
     } catch (err) {
       // 验证失败
       console.log(err)
@@ -57,12 +76,7 @@
 </script>
 
 <template>
-  <uni-forms
-    class="login-form"
-    ref="accountForm"
-    :model="formData"
-    :rules="accountRules"
-  >
+  <uni-forms class="login-form" ref="accountForm" :model="formData" :rules="accountRules">
     <uni-forms-item name="account">
       <input
         type="text"
