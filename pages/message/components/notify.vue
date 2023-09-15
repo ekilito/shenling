@@ -13,6 +13,8 @@
   const pageSize = ref(5)
   // 是否还有更多数据
   const hasMore = ref(true)
+  // 是否加载完成
+  const isTriggered = ref(false)
 
   // 生命周期
   onMounted(() => {
@@ -28,12 +30,25 @@
     getNotifyList(nextPage.value)
   }
 
+  // 下拉刷新
+  async function onScrollViewRefresh() {
+    console.log('下拉刷新啦...')
+    // 开启下拉
+    isTriggered.value = true
+    // 必须在请求结束后 才结束下拉的动画
+    await getNotifyList() // 没有传惨 默认page=1
+    // 关闭下拉
+    isTriggered.value = false
+  }
+
   async function getNotifyList(page = 1, pageSize = 5) {
     // 调用接口
     const { code, data } = await messageAPI.list(201, page, pageSize)
     // console.log(res)
     // 检测接口是否调用成功
     if (code !== 200) return uni.utils.toast('获取通知失败，稍后重试!')
+    // 清空原始的数据 下拉刷新时候 重置数据
+    if (page === 1) notifyList.value = []
     // 渲染数据  合并数据
     notifyList.value = [...notifyList.value, ...data.items]
     // 更新下一页页码
@@ -49,8 +64,17 @@
   <!-- scrolltolower 事件监听页面是否滚动到达底部
    scroll-y 垂直滚动
    refresher-enabled 下拉刷新
+    @refresherrefresh="onScrollViewRefresh" 下拉刷新效果
+    :refresher-triggered="isTriggered"  绑定下拉交互
    -->
-  <scroll-view @scrolltolower="onScrollToLower" class="scroll-view" refresher-enabled scroll-y>
+  <scroll-view
+    @refresherrefresh="onScrollViewRefresh"
+    @scrolltolower="onScrollToLower"
+    class="scroll-view"
+    refresher-enabled
+    :refresher-triggered="isTriggered"
+    scroll-y
+  >
     <view class="scroll-view-wrapper">
       <view class="message-action">
         <text class="iconfont icon-clear"></text>
