@@ -33,6 +33,7 @@
     // 重新请求第1页数据
     await getAnnounceList()
     isTriggered.value = false
+    uni.utils.toast('下拉刷新成功')
   }
 
   // 任务列表

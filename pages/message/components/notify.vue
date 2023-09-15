@@ -39,6 +39,7 @@
     await getNotifyList() // 没有传惨 默认page=1
     // 关闭下拉
     isTriggered.value = false
+    uni.utils.toast('下拉刷新成功')
   }
 
   async function getNotifyList(page = 1, pageSize = 5) {
