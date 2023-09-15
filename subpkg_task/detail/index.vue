@@ -1,16 +1,37 @@
 <script setup>
   import { onLoad } from '@dcloudio/uni-app'
+  import taskApi from '@/apis/task'
+  import { ref } from 'vue'
+
+  // 任务详情
+  const taskDetail = ref({})
 
   // 获取地址参数
   onLoad((params) => {
     console.log(params.id)
+    // 获取任务 ID 并获取详情数据
+    getTaskDetail(params.id)
   })
+
+  // 获取任务详情
+  async function getTaskDetail(id) {
+    if (!id) return
+    const { code, data } = await taskApi.detail(id)
+    if (code !== 200) return uni.utils.toast('获取数据失败, 稍后重试 !')
+    // 渲染数据
+    taskDetail.value = data
+  }
 </script>
 
 <template>
   <view class="page-container">
     <view class="search-bar">
+      <!-- #ifdef H5 -->
+      <text class="iconfont icon-search"></text>
+      <!-- #endif -->
+      <!-- #ifdef APP-PLUS | MP -->
       <text class="iconfont icon-scan"></text>
+      <!-- #endif -->
       <input class="input" type="text" placeholder="输入运单号" />
     </view>
     <scroll-view scroll-y class="task-detail">
@@ -18,15 +39,9 @@
         <view class="basic-info panel">
           <view class="panel-title">基本信息</view>
           <view class="timeline">
-            <view class="line"
-              >北京市昌平区回龙观街道西三旗桥东金燕龙写字楼8877号</view
-            >
-            <view class="line">河南省郑州市路北区北清路99号</view>
-            <navigator
-              hover-class="none"
-              url="/subpkg_task/guide/index"
-              class="guide"
-            >
+            <view class="line">{{ taskDetail.startAddress }}</view>
+            <view class="line">{{ taskDetail.endAddress }}</view>
+            <navigator hover-class="none" url="/subpkg_task/guide/index" class="guide">
               <text class="iconfont icon-guide"></text>
               <text>开始导航</text>
             </navigator>
@@ -34,43 +49,48 @@
           <view class="info-list">
             <view class="info-list-item">
               <text class="label">任务编号</text>
-              <text class="value">1557211886558850</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">提货联系人</text>
-              <text class="value">张三</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">联系电话</text>
-              <text class="value">13212345678</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">预计提货时间</text>
-              <text class="value">2022.05.04 13:00</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">实际提货时间</text>
-              <text class="value">2022.05.04 13:00</text>
+              <text class="value">{{ taskDetail.transportTaskId }}</text>
             </view>
 
-            <view class="hr"></view>
+            <!-- 待提货展示数据 -->
+            <template v-if="taskDetail.status === 1">
+              <view class="info-list-item">
+                <text class="label">联系人</text>
+                <text class="value">{{ taskDetail.startHandoverName }}</text>
+              </view>
+              <view class="info-list-item">
+                <text class="label">联系电话</text>
+                <text class="value">{{ taskDetail.startHandoverPhone }}</text>
+              </view>
+              <view class="info-list-item">
+                <text class="label">预计提货时间</text>
+                <text class="value">{{ taskDetail.planDepartureTime }}</text>
+              </view>
+              <view class="info-list-item">
+                <text class="label">实际提货时间</text>
+                <text class="value">{{ taskDetail.actualDepartureTime }}</text>
+              </view>
+            </template>
 
-            <view class="info-list-item">
-              <text class="label">交付联系人</text>
-              <text class="value">李四</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">联系电话</text>
-              <text class="value">13212345678</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">预计送达时间</text>
-              <text class="value">2022.05.05 10:00</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">实际送达时间</text>
-              <text class="value">2022.05.05 10:00</text>
-            </view>
+            <!-- 在途展示数据 -->
+            <template v-if="taskDetail.status === 2">
+              <view class="info-list-item">
+                <text class="label">交付联系人</text>
+                <text class="value">{{ taskDetail.finishHandoverName }}</text>
+              </view>
+              <view class="info-list-item">
+                <text class="label">联系电话</text>
+                <text class="value">{{ taskDetail.finishHandoverPhone }}</text>
+              </view>
+              <view class="info-list-item">
+                <text class="label">预计送达时间</text>
+                <text class="value">{{ taskDetail.planArrivalTime }}</text>
+              </view>
+              <view class="info-list-item">
+                <text class="label">实际送达时间</text>
+                <text class="value">{{ taskDetail.actualArrivalTime }}</text>
+              </view>
+            </template>
           </view>
         </view>
 
@@ -144,45 +164,38 @@
       </view>
     </scroll-view>
 
-    <view class="toolbar" v-if="true">
-      <navigator
-        url="/subpkg_task/delay/index"
-        hover-class="none"
-        class="button secondary"
-        >延迟提货</navigator
-      >
-      <navigator
-        url="/subpkg_task/pickup/index"
-        hover-class="none"
-        class="button primary"
-        >提货</navigator
-      >
-    </view>
-    <view class="toolbar" v-if="false">
-      <navigator
-        url="/subpkg_task/except/index"
-        hover-class="none"
-        class="button secondary"
-        >异常上报
+    <!-- 按钮的状态 -->
+    <view class="toolbar" v-if="taskDetail.status === 1">
+      <navigator :url="`/subpkg_task/delay/index?id=${taskDetail.id}`" hover-class="none" class="button secondary">
+        延迟提货
       </navigator>
-      <navigator
-        url="/subpkg_task/delivery/index"
-        hover-class="none"
-        class="button primary"
-        >支付</navigator
-      >
+      <navigator :url="`/subpkg_task/pickup/index?id=${taskDetail.id}`" hover-class="none" class="button primary">
+        提货
+      </navigator>
     </view>
-    <view class="toolbar" v-if="false">
+    <view class="toolbar" v-if="taskDetail.status === 2">
       <navigator
-        url="/subpkg_task/record/index"
+        :url="`/subpkg_task/except/index?transportTaskId=${taskDetail.transportTaskId}`"
+        hover-class="none"
+        class="button secondary"
+      >
+        异常上报
+      </navigator>
+      <navigator :url="`/subpkg_task/delivery/index?id=${taskDetail.id}`" hover-class="none" class="button primary">
+        支付
+      </navigator>
+    </view>
+    <view class="toolbar" v-if="taskDetail.status === 4">
+      <navigator
+        :url="`/subpkg_task/record/index?transportTaskId=${taskDetail.transportTaskId}`"
         hover-class="none"
         class="button primary block"
-        >回车登记</navigator
       >
+        回车登记
+      </navigator>
     </view>
   </view>
 </template>
-
 <style lang="scss" scoped>
   @import './index.scss';
 </style>
