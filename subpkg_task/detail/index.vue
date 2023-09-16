@@ -166,7 +166,12 @@
 
     <!-- 按钮的状态 -->
     <view class="toolbar" v-if="taskDetail.status === 1">
-      <navigator :url="`/subpkg_task/delay/index?id=${taskDetail.id}`" hover-class="none" class="button secondary">
+      <!-- 在点击延迟收货的时候，带上预计提货时间 原定时间 &planDepartureTime=${taskDetail.planDepartureTime}-->
+      <navigator
+        :url="`/subpkg_task/delay/index?id=${taskDetail.id}&planDepartureTime=${taskDetail.planDepartureTime}`"
+        hover-class="none"
+        class="button secondary"
+      >
         延迟提货
       </navigator>
       <navigator :url="`/subpkg_task/pickup/index?id=${taskDetail.id}`" hover-class="none" class="button primary">
