@@ -26,4 +26,12 @@ export default {
     if (!data.id) return
     return uniFetch.put('/driver/tasks/delay', data)
   },
+  /**
+   * 提货
+   * @property {Object} data - 接口参数
+   */
+  pickup(data) {
+    if (!data.id) return
+    return uniFetch.post('/driver/tasks/takeDelivery', data)
+  },
 }
