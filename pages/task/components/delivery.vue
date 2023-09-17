@@ -42,8 +42,23 @@
         <view class="footer">
           <view class="label">提货时间</view>
           <view class="time">{{ delivery.planArrivalTime }}</view>
-          <navigator hover-class="none" :url="`/subpkg_task/delivery/index?id=${delivery.id}`" class="action">
+          <!-- status=2为交付-->
+          <navigator
+            v-if="delivery.status === 2"
+            hover-class="none"
+            :url="`/subpkg_task/delivery/index?id=${delivery.id}`"
+            class="action"
+          >
             交付
+          </navigator>
+          <!-- status为4为回车登记-->
+          <navigator
+            v-if="delivery.status === 4"
+            hover-class="none"
+            :url="`/subpkg_task/record/index?transportTaskId=${delivery.transportTaskId}`"
+            class="action"
+          >
+            回车登记
           </navigator>
         </view>
       </view>

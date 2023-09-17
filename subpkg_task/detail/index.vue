@@ -73,7 +73,7 @@
             </template>
 
             <!-- 在途展示数据 -->
-            <template v-if="taskDetail.status === 2">
+            <template v-if="taskDetail.status >= 2">
               <view style="margin: 20rpx 0; border-bottom: 1rpx solid #f4f4f4"> </view>
               <view class="info-list-item">
                 <text class="label">交付联系人</text>
@@ -137,20 +137,27 @@
           </view>
         </view>
 
-        <view class="delivery-info panel">
+        <view v-if="taskDetail.status === 4 || taskDetail.status === 6" class="delivery-info panel">
           <view class="panel-title">交货信息</view>
           <view class="label">交货凭证</view>
           <view class="pictures">
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
+            <image
+              v-for="certificate in taskDetail.certificatePictureList"
+              :key="certificate.url"
+              class="picture"
+              :src="certificate.url"
+            ></image>
+
             <view v-if="false" class="picture-blank">暂无图片</view>
           </view>
           <view class="label">货品照片</view>
           <view class="pictures">
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
+            <image
+              v-for="delivery in taskDetail.deliverPictureList"
+              :key="delivery.url"
+              class="picture"
+              :src="delivery.url"
+            ></image>
             <view v-if="false" class="picture-blank">暂无图片</view>
           </view>
         </view>

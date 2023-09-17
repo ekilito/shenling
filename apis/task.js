@@ -41,4 +41,12 @@ export default {
   except(data) {
     return uniFetch.post('/driver/tasks/reportException', data)
   },
+  /**
+   * 交付
+   * @property {Object} data - 接口参数
+   */
+  deliver(data) {
+    if (!data.id) return { code: -2, data: '参数有误' }
+    return uniFetch.post('/driver/tasks/deliver', data)
+  },
 }
