@@ -53,7 +53,7 @@
             </view>
 
             <!-- 待提货展示数据 -->
-            <template v-if="taskDetail.status === 1">
+            <template v-if="taskDetail.status >= 1">
               <view class="info-list-item">
                 <text class="label">联系人</text>
                 <text class="value">{{ taskDetail.startHandoverName }}</text>
@@ -74,6 +74,7 @@
 
             <!-- 在途展示数据 -->
             <template v-if="taskDetail.status === 2">
+              <view style="margin: 20rpx 0; border-bottom: 1rpx solid #f4f4f4"> </view>
               <view class="info-list-item">
                 <text class="label">交付联系人</text>
                 <text class="value">{{ taskDetail.finishHandoverName }}</text>
@@ -126,20 +127,26 @@
           </view>
         </view>
 
-        <view class="panel pickup-info">
+        <view v-if="taskDetail.status >= 2" class="panel pickup-info">
           <view class="panel-title">提货信息</view>
           <view class="label">提货凭证</view>
           <view class="pictures">
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
+            <image
+              v-for="receipt in taskDetail.cargoPictureList"
+              :key="receipt.url"
+              class="picture"
+              :src="receipt.url"
+            ></image>
             <view v-if="false" class="picture-blank">暂无图片</view>
           </view>
           <view class="label">货品照片</view>
           <view class="pictures">
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
-            <image class="picture" src="" mode=""></image>
+            <image
+              v-for="goods in taskDetail.cargoPickUpPictureList"
+              :key="goods.url"
+              class="picture"
+              :src="goods.url"
+            ></image>
             <view v-if="false" class="picture-blank">暂无图片</view>
           </view>
         </view>
