@@ -97,32 +97,18 @@
 
         <view class="except-info panel">
           <view class="panel-title">异常信息</view>
-          <view class="info-list">
+          <view v-for="exception in taskDetail.exceptionList" :key="exception.exceptionType" class="info-list">
             <view class="info-list-item">
               <text class="label">上报时间</text>
-              <text class="value">2022.05.04 13:00</text>
+              <text class="value">{{ exception.exceptionTime }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">异常类型</text>
-              <text class="value">有异常响动</text>
+              <text class="value">{{ exception.exceptionType }}</text>
             </view>
             <view class="info-list-item">
               <text class="label">处理结果</text>
-              <text class="value">继续运输</text>
-            </view>
-          </view>
-          <view class="info-list">
-            <view class="info-list-item">
-              <text class="label">上报时间</text>
-              <text class="value">2022.05.04 13:00</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">异常类型</text>
-              <text class="value">有异常响动</text>
-            </view>
-            <view class="info-list-item">
-              <text class="label">处理结果</text>
-              <text class="value">继续运输</text>
+              <text class="value">{{ exception.handleResult }}</text>
             </view>
           </view>
         </view>

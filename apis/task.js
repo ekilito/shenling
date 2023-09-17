@@ -34,4 +34,11 @@ export default {
     if (!data.id) return
     return uniFetch.post('/driver/tasks/takeDelivery', data)
   },
+  /**
+   * 上报异常
+   * @param {Object} data - 接口数据
+   */
+  except(data) {
+    return uniFetch.post('/driver/tasks/reportException', data)
+  },
 }
