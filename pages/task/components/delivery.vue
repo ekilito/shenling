@@ -55,7 +55,7 @@
           <navigator
             v-if="delivery.status === 4"
             hover-class="none"
-            :url="`/subpkg_task/record/index?transportTaskId=${delivery.transportTaskId}`"
+            :url="`/subpkg_task/record/index?transportTaskId=${delivery.transportTaskId}&actualDepartureTime=${delivery.actualDepartureTime}`"
             class="action"
           >
             回车登记

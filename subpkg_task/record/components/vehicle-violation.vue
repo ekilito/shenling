@@ -70,13 +70,10 @@
     </view>
     <view v-show="show" class="vehicle-panel-body">
       <uni-list>
-        <uni-list-item
-          v-for="item in initialData"
-          direction="column"
-          :border="false"
-          :title="item.title"
-        >
+        <uni-list-item v-for="item in initialData" direction="column" :border="false" :title="item.title">
           <template v-slot:footer>
+            <!-- 将来此处引入一个组件-->
+            <!-- 通用组件 传入参数 item.types 也就是定义的数组  { id: 1, text: '闯红灯' },-->
             <vehicle-options :types="item.types" />
           </template>
         </uni-list-item>
@@ -84,7 +81,6 @@
     </view>
   </view>
 </template>
-
 <style lang="scss" scoped>
   @import './styles/vehicle-panel.scss';
   @import './styles/vehicle-violation.scss';

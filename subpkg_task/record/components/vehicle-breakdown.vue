@@ -44,20 +44,14 @@
           <template v-slot:footer>
             <vehicle-options :types="types" />
             <view class="textarea-wrapper">
-              <textarea
-                class="textarea"
-                placeholder="请输入故障描述"
-              ></textarea>
+              <textarea class="textarea" placeholder="请输入异常描述"></textarea>
               <view class="words-count">0/50</view>
             </view>
           </template>
         </uni-list-item>
-        <uni-list-item
-          direction="column"
-          :border="false"
-          title="请上传现场照片"
-        >
+        <uni-list-item direction="column" :border="false" title="请拍照">
           <template v-slot:footer>
+            <!-- 通用组件 传入参数-->
             <uni-file-picker limit="6"></uni-file-picker>
           </template>
         </uni-list-item>

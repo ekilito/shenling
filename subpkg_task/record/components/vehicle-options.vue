@@ -5,12 +5,14 @@
   const tabIndex = ref(-1)
 
   // 接收传入组件的数据
+  // 在自定义组件的时接收外部传入的数据 defineProps  用 props 接收
   const props = defineProps({
     types: Array,
   })
 
   // 点击选中选项
   function onOptionSelect(index) {
+    console.log('被点击了...已选中', index)
     // 高亮显示选中的选项
     tabIndex.value = index
   }

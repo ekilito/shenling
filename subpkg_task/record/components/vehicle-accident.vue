@@ -43,22 +43,17 @@
       <uni-list>
         <uni-list-item direction="column" :border="false" title="事故类型">
           <template v-slot:footer>
+            <!-- 封封装通用组件 传入参数-->
             <vehicle-options :types="types" />
             <view class="textarea-wrapper">
-              <textarea
-                class="textarea"
-                placeholder="请输入事故描述"
-              ></textarea>
+              <textarea class="textarea" placeholder="请输入异常描述"></textarea>
               <view class="words-count">0/50</view>
             </view>
           </template>
         </uni-list-item>
-        <uni-list-item
-          direction="column"
-          :border="false"
-          title="请上传现场照片"
-        >
+        <uni-list-item direction="column" :border="false" title="请拍照">
           <template v-slot:footer>
+            <!-- 封装通用组件 -->
             <uni-file-picker limit="6"></uni-file-picker>
           </template>
         </uni-list-item>

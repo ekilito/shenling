@@ -192,7 +192,7 @@
     </view>
     <view class="toolbar" v-if="taskDetail.status === 4">
       <navigator
-        :url="`/subpkg_task/record/index?transportTaskId=${taskDetail.transportTaskId}`"
+        :url="`/subpkg_task/record/index?transportTaskId=${taskDetail.transportTaskId}&actualDepartureTime=${taskDetail.actualDepartureTime}`"
         hover-class="none"
         class="button primary block"
       >
