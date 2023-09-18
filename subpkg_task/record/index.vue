@@ -7,6 +7,8 @@
   // 导入 pinia
   import { storeToRefs } from 'pinia'
   import { useTaskStore } from '@/stores/task'
+  // api
+  import taskApi from '@/apis/task'
 
   // 回车登记的全部数据 解构保持响应式
   const { recordData } = storeToRefs(useTaskStore())
@@ -26,6 +28,29 @@
     // 发车时间  存入store
     recordData.value.startTime = query.actualDepartureTime
   })
+
+  // 点击提交登记
+  async function onFormSubmit() {
+    // 过滤掉图片多余的数据， 只保留 url
+    const { accidentImagesList, faultImagesList } = recordData.value
+    // 事故照片
+    recordData.value.accidentImagesList = accidentImagesList.map(({ url }) => {
+      return { url }
+    })
+    // 故障照片
+    recordData.value.faultImagesList = faultImagesList.map(({ url }) => {
+      return { url }
+    })
+
+    // 调用接口提交数据
+    const { code } = await taskApi.record(recordData.value)
+    // 检测接口否调用成功
+    if (code !== 200) return uni.utils.toast('回车登记失败!')
+    // 提示
+    uni.utils.toast('提交登记成功！')
+    // 跳转到任务列表
+    uni.reLaunch({ url: '/pages/task/index' })
+  }
 </script>
 <template>
   <view class="page-container">
@@ -48,7 +73,7 @@
       </view>
     </scroll-view>
     <view class="toolbar">
-      <button class="button">提交登记</button>
+      <button @click="onFormSubmit" class="button">提交登记</button>
     </view>
   </view>
 </template>

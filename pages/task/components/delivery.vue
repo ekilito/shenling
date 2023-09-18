@@ -19,7 +19,7 @@
     // 检测接口是成功
     if (code !== 200) uni.utils.toast('在途任务获取失败！')
     // 渲染数据
-    deliveryList.value = data.items
+    deliveryList.value = data.items || []
     // 检测任务列表是否为空
     isEmpty.value = deliveryList.value.length === 0
   }

@@ -49,4 +49,12 @@ export default {
     if (!data.id) return { code: -2, data: '参数有误' }
     return uniFetch.post('/driver/tasks/deliver', data)
   },
+  /**
+   * 回车登记
+   * @param {Object} data - 接口数据
+   */
+  record(data) {
+    if (!data.id) return
+    return uniFetch.post('/driver/tasks/truckRegistration', data)
+  },
 }
