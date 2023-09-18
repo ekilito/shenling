@@ -1,6 +1,9 @@
 <script setup>
   import { ref } from 'vue'
   import vehicleOptions from './vehicle-options'
+  // 导入 pinia
+  import { useTaskStore } from '@/stores/task'
+  const taskStore = useTaskStore()
 
   // 是不显示详细的选项
   const show = ref(false)
@@ -50,6 +53,8 @@
   function onRadioChange(ev) {
     // 展开详细的选项
     show.value = !!parseInt(ev.detail.value)
+    // 是否有违章
+    taskStore.recordData.isBreakRules = show.value
   }
 </script>
 
@@ -74,7 +79,7 @@
           <template v-slot:footer>
             <!-- 将来此处引入一个组件-->
             <!-- 通用组件 传入参数 item.types 也就是定义的数组  { id: 1, text: '闯红灯' },-->
-            <vehicle-options :types="item.types" />
+            <vehicle-options :data-key="item.key" :types="item.types" />
           </template>
         </uni-list-item>
       </uni-list>

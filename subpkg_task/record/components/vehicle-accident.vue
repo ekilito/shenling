@@ -1,6 +1,10 @@
 <script setup>
   import { ref } from 'vue'
+  // 引入option通用组件
   import vehicleOptions from './vehicle-options'
+  // 导入 pinia
+  import { useTaskStore } from '@/stores/task'
+  const taskStore = useTaskStore()
 
   // 是不显示详细的选项
   const show = ref(false)
@@ -20,7 +24,9 @@
 
   function onRadioChange(ev) {
     // 展开详细的选项
-    show.value = ev.detail.value
+    show.value = !!parseInt(ev.detail.value)
+    // 是否有违章
+    taskStore.recordData.isAccident = show.value
   }
 </script>
 
@@ -43,18 +49,25 @@
       <uni-list>
         <uni-list-item direction="column" :border="false" title="事故类型">
           <template v-slot:footer>
-            <!-- 封封装通用组件 传入参数-->
-            <vehicle-options :types="types" />
+            <!-- 封封装通用组件 传入参数 data-key="accidentType"类型-->
+            <vehicle-options data-key="accidentType" :types="types" />
             <view class="textarea-wrapper">
-              <textarea class="textarea" placeholder="请输入异常描述"></textarea>
+              <textarea
+                v-model="taskStore.recordData.accidentDescription"
+                class="textarea"
+                placeholder="请输入事故描述"
+              ></textarea>
               <view class="words-count">0/50</view>
             </view>
           </template>
         </uni-list-item>
-        <uni-list-item direction="column" :border="false" title="请拍照">
+        <uni-list-item direction="column" :border="false" title="请上传事故现场照片">
           <template v-slot:footer>
-            <!-- 封装通用组件 -->
-            <uni-file-picker limit="6"></uni-file-picker>
+            <uni-file-picker
+              v-model="taskStore.recordData.accidentImagesList"
+              file-extname="jpg,webp,gif,png"
+              limit="3"
+            ></uni-file-picker>
           </template>
         </uni-list-item>
       </uni-list>

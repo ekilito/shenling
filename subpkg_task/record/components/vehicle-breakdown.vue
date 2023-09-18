@@ -1,6 +1,10 @@
 <script setup>
   import { ref } from 'vue'
+  // 引入通用options组件
   import vehicleOptions from './vehicle-options'
+  // 导入 pinia
+  import { useTaskStore } from '@/stores/task'
+  const taskStore = useTaskStore()
 
   // 是不显示详细的选项
   const show = ref(false)
@@ -19,7 +23,9 @@
 
   function onRadioChange(ev) {
     // 展开详细的选项
-    show.value = ev.detail.value
+    show.value = !!parseInt(ev.detail.value)
+    // 是否有违章
+    taskStore.recordData.isFault = show.value
   }
 </script>
 
@@ -42,17 +48,25 @@
       <uni-list>
         <uni-list-item direction="column" :border="false" title="故障类型">
           <template v-slot:footer>
-            <vehicle-options :types="types" />
+            <!-- 此处引入组件 传入故障类型 types -->
+            <vehicle-options data-key="faultType" :types="types" />
             <view class="textarea-wrapper">
-              <textarea class="textarea" placeholder="请输入异常描述"></textarea>
+              <textarea
+                v-model="taskStore.recordData.faultDescription"
+                class="textarea"
+                placeholder="请输入故障描述"
+              ></textarea>
               <view class="words-count">0/50</view>
             </view>
           </template>
         </uni-list-item>
-        <uni-list-item direction="column" :border="false" title="请拍照">
+        <uni-list-item direction="column" :border="false" title="请上传车辆故障照片">
           <template v-slot:footer>
-            <!-- 通用组件 传入参数-->
-            <uni-file-picker limit="6"></uni-file-picker>
+            <uni-file-picker
+              v-model="taskStore.recordData.faultImagesList"
+              file-extname="jpg,webp,gif,png"
+              limit="3"
+            ></uni-file-picker>
           </template>
         </uni-list-item>
       </uni-list>
