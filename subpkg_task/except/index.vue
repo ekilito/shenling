@@ -28,7 +28,7 @@
   const popup = ref(null)
   // 定义 popup 组件展示的数据
   const exceptionTypes = reactive([
-    { text: '发动机启动困难', checked: true },
+    { text: '发动机启动困难', checked: true }, // checked: true 首次默认选中
     { text: '不着车，漏油', checked: false },
     { text: '照明失灵', checked: false },
     { text: '排烟异常、温度异常', checked: false },
