@@ -67,7 +67,15 @@
 
       // 地址重定向或switchTab
       // console.log(redirectURL.value)
-      uni[routeType.value]({ url: redirectURL.value })
+      // uni[routeType.value]({ url: redirectURL.value })
+
+      // 解决打包h5端登陆页面的问题
+      // 地址重定向或switchTab
+      if (routeType.value === 'switchTab') {
+        uni.switchTab({ url: redirectURL.value })
+      } else {
+        uni.redirectTo({ url: redirectURL.value })
+      }
     } catch (err) {
       // 验证失败
       console.log(err)
