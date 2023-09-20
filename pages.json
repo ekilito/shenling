@@ -122,6 +122,7 @@
     "enablePullDownRefresh": false
   },
   "tabBar": {
+    "custom": true,
     "borderStyle": "white",
     "backgroundColor": "#fff",
     "color": "#818181",
@@ -225,6 +226,12 @@
           "path": "settings/index",
           "style": {
             "navigationBarTitleText": "系统设置"
+          }
+        },
+        {
+          "path": "verify/index",
+          "style": {
+            "navigationBarTitleText": "实人认证"
           }
         },
         {

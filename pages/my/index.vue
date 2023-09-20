@@ -72,6 +72,9 @@
         <uni-list-item to="/subpkg_user/truck/index" showArrow title="车辆信息" />
         <uni-list-item to="/subpkg_user/task/index" showArrow title="任务数据" />
         <uni-list-item to="/subpkg_user/settings/index" showArrow title="系统设置" />
+        <!-- #ifdef APP-PLUS -->
+        <uni-list-item to="/subpkg_user/verify/index" showArrow title="实人认证" />
+        <!-- #endif -->
       </uni-list>
     </view>
   </view>

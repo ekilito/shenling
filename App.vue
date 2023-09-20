@@ -5,6 +5,12 @@
     },
     onShow: function () {
       // console.log('App Show')
+      uni.setTabBarBadge({
+        index: 0,
+        text: '1',
+      })
+      // 隐藏 tabBar 后显示自定义的 tabBar
+      // uni.hideTabBar()
     },
     onHide: function () {
       // console.log('App Hide')
